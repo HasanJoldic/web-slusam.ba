@@ -24,6 +24,8 @@ import Footer from "./Footer";
 import StatusWrapper from "./StatusWrapper";
 import MainCms from "../components/MainCms";
 import AddArtist from "../components/AddArtist";
+import ArtistDetail from "../components/ArtistDetail";
+import AddSong from "../components/AddSong";
 
 import "./App.less";
 
@@ -72,6 +74,12 @@ class App extends Component<IAppProps, IAppState> {
         break;
       case "/dodaj-pjesme/:izvodjac":
         content = <AddArtist />;
+        break;
+      case "/izvodjac/:artist":
+        content = <ArtistDetail artist={this.props.match.params.artist} />;
+        break;
+      case "/izvodjac/:artist/nova-pjesma":
+        content = <AddSong artist={this.props.match.params.artist} />;
         break;
     }
     console.log(content);

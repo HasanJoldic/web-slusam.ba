@@ -1,0 +1,70 @@
+@import "../assets/styles/variables.less";
+
+.new-artist-form-container {
+  border: 1px solid @light-grey;
+  padding: 50px;
+}
+
+.add-artist-dropzone-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 200px;
+  padding: 10px;
+  background-color: #C7B12D;
+  // border-radius: 10px;
+  color: #FFF;
+}
+
+.add-artist-dropzone:hover {
+  cursor: hand;
+  cursor: pointer;
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+}
+
+.add-artist-dropzone-button svg {
+  fill: #FFF;
+}
+
+.add-artist-submit-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+}
+
+.add-artist-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  width: 200px;
+  background-color: @main-blue;
+  border-radius: 10px;
+  color: #FFF;
+  font-size: 20px;
+}
+
+.add-artist-submit-button svg{
+  fill: #FFF;
+}
+
+.react-dropzone-add-song {
+  display: flex;
+  justify-content: center; align-items: center;
+  border: 2px dashed @dark-grey;
+  border-radius: 10px;
+  padding: 50px;
+}
+
+.react-dropzone-plus {
+  font-size: 200px;
+}
+
+.song-uploads-container {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid @dark-grey;
+  border-radius: 10px;
+  overflow: auto;
+  height: 500px;
+}

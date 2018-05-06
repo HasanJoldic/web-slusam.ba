@@ -57,6 +57,10 @@ const RouteConfigExample = () => (
       </Route>
       <Route exact path="/dodaj-pjesme/:izvodjac" component={App}>
       </Route>
+      <Route exact path="/izvodjac/:artist" component={App}>
+      </Route>
+      <Route exact path="/izvodjac/:artist/nova-pjesma" component={App}>
+      </Route>
     </div>
   </Router>
 )

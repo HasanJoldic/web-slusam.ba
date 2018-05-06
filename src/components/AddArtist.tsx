@@ -18,6 +18,7 @@ import axios from "axios";
 import "./AddArtist.less";
 
 import { changeCmsSearchText } from "../reducers/cms/actions";
+import { getBase64 } from "../utils/utils";
 
 interface IMainCmsProps {
   searchText: string;
@@ -38,19 +39,27 @@ class AddArtist extends Component<any, any> {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { artistName, artistLastName } = this.state;
-    axios({
-      method: 'post',
-      url: "http://46.101.191.69:3000/api/v1/add-artist",
-      headers: {"Content-Type": "application/json"},
-      data: {
-        artistName,
-        artistLastName
-      }
-    });
+    const { artistName, artistLastName, imageUploaded, isPerson } = this.state;
+    var reader = new FileReader();
+    reader.readAsDataURL(imageUploaded);
+    reader.onload = function () {
+      console.log(reader.result);
+      axios({
+        method: 'post',
+        url: "http://46.101.191.69:3000/api/v1/add-artist",
+        headers: {"Content-Type": "application/json"},
+        data: {
+          artistName,
+          artistLastName,
+          image: reader.result,
+          isGroup: !isPerson
+        }
+      });
+    };
   }
 
   render() {
+    console.log(this.state.imageUploaded)
     return (
       <div className="container new-artist-form-container" style={{marginTop:"30px"}}>
         <div style={{textAlign:"center",marginBottom:"50px"}}><h1>Dodaj novog izvodjaca</h1></div>
@@ -85,16 +94,17 @@ class AddArtist extends Component<any, any> {
             <Dropzone
               style={{display:"flex",alignItems:"flex-end"}}
               className="add-artist-dropzone"
-              accept="image/jpeg, image/png"
+              accept="image/jpeg"
               multiple={false}
               maxSize={1000*1000}
-              onDropAccepted={(files) => this.setState({imageUploaded: files[0].preview})}
+              onDropAccepted={(files) => this.setState({imageUploaded: files[0]})}
             > 
               <span className="add-artist-dropzone-button">Ubaci sliku
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style={{height:"30px"}}><path d="M528 288H384v-32h64c42.6 0 64.2-51.7 33.9-81.9l-160-160c-18.8-18.8-49.1-18.7-67.9 0l-160 160c-30.1 30.1-8.7 81.9 34 81.9h64v32H48c-26.5 0-48 21.5-48 48v128c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V336c0-26.5-21.5-48-48-48zm-400-80L288 48l160 160H336v160h-96V208H128zm400 256H48V336h144v32c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48v-32h144v128zm-40-64c0 13.3-10.7 24-24 24s-24-10.7-24-24 10.7-24 24-24 24 10.7 24 24z"/></svg>
               </span>
-              {this.state.imageUploaded &&
-                <img style={{width:"200px",height:"200px",objectFit:"cover",marginLeft:"50px",padding:"10px",border:"1px dashed rgba(128, 128, 128, 0.3)"}} src={this.state.imageUploaded} />
+              {this.state.imageUploaded && this.state.imageUploaded.preview &&
+                <img style={{width:"200px",height:"200px",objectFit:"cover",marginLeft:"50px",padding:"10px",border:"1px dashed rgba(128, 128, 128, 0.3)"}} 
+                src={this.state.imageUploaded.preview} />
               }
             </Dropzone>
             <div className="add-artist-submit-button-container">
