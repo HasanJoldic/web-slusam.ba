@@ -40,26 +40,27 @@ class AddArtist extends Component<any, any> {
   handleSubmit(e) {
     e.preventDefault();
     const { artistName, artistLastName, imageUploaded, isPerson } = this.state;
-    var reader = new FileReader();
-    reader.readAsDataURL(imageUploaded);
-    reader.onload = function () {
-      console.log(reader.result);
-      axios({
-        method: 'post',
-        url: "http://46.101.191.69:3000/api/v1/add-artist",
-        headers: {"Content-Type": "application/json"},
-        data: {
-          artistName,
-          artistLastName,
-          image: reader.result,
-          isGroup: !isPerson
-        }
-      });
-    };
+    const image = {
+      uri: imageUploaded.preview,
+      type: "image/jpeg",
+      name: "newImage"
+    }
+    const isGroup = !isPerson;
+    const body:any = new FormData();
+    body.append("artistName", artistName);
+    body.append("artistLastName", artistLastName);
+    body.append("isGroup", isPerson ? "" : "true");
+    body.append("image", imageUploaded);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    }
+    axios.post("http://46.101.191.69:3000/api/v1/add-artist/", body, config);
   }
 
   render() {
-    console.log(this.state.imageUploaded)
+    console.log(this.state);
     return (
       <div className="container new-artist-form-container" style={{marginTop:"30px"}}>
         <div style={{textAlign:"center",marginBottom:"50px"}}><h1>Dodaj novog izvodjaca</h1></div>
@@ -96,7 +97,7 @@ class AddArtist extends Component<any, any> {
               className="add-artist-dropzone"
               accept="image/jpeg"
               multiple={false}
-              maxSize={1000*1000}
+              maxSize={5000*5000}
               onDropAccepted={(files) => this.setState({imageUploaded: files[0]})}
             > 
               <span className="add-artist-dropzone-button">Ubaci sliku
